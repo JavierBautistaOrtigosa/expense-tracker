@@ -1,5 +1,6 @@
-import { useState } from "react";
+// import { useState } from "react";
 
+/* *** IMPORTANTE: VERSION COPILOT *** 
 function ExpenseForm({ expenses, addExpenseHandler }) {
   const [newExpense, setNewExpense] = useState({
     name: "",
@@ -71,7 +72,9 @@ function ExpenseForm({ expenses, addExpenseHandler }) {
 
 export { ExpenseForm };
 
-/* *** IMPORTANTE *** 
+*/
+
+/* *** IMPORTANTE: VERSION PROPIA *** 
 // Como pasamos de este codigo a la solucion que genera Copilot?
 
 import { useState } from "react";
