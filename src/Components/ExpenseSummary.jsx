@@ -1,9 +1,11 @@
+import { ecc } from '../StyleClasses.js';
+
 function ExpenseSummary({ totalAmount }) {
   return (
-    <>
-      <h3>Total</h3>
-      <p>{totalAmount}</p>
-    </>
+    <section className={ecc.c}>
+      <h3 className={ecc.t}>Total</h3>
+      <p className={ecc.d}>{totalAmount}</p>
+    </section>
   );
 }
 
