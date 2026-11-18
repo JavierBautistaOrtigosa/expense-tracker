@@ -1,121 +1,42 @@
-// import { useState } from "react";
-
-/* *** IMPORTANTE: VERSION COPILOT *** 
-function ExpenseForm({ expenses, addExpenseHandler }) {
-  const [newExpense, setNewExpense] = useState({
-    name: "",
-    cost: "",
-  });
-
-  const saveExpenseHandler = (e) => {
-    e.preventDefault();
-
-    const expenseToSave = {
-      ...newExpense,
-      id: Date.now(),
-    };
-
-    addExpenseHandler(expenseToSave);
-
-    setNewExpense({
-      name: "",
-      cost: "",
-    });
-  };
-
+function ExpenseForm({ expense, setExpense, handleSubmit }) {
   return (
     <>
-      <ul>
-        {expenses.map((expense) => (
-          <li key={expense.id}>
-            {expense.name} - {expense.cost}
-          </li>
-        ))}
-      </ul>
-
-      <h1>Expense Form</h1>
-
-      <form onSubmit={saveExpenseHandler}>
+      <h3>Form</h3>
+      <form onSubmit={handleSubmit}>
         <input
-          placeholder="Name"
-          value={newExpense.name}
+          type='text'
+          placeholder='Type amount description... '
+          value={expense.description}
           onChange={(e) =>
-            setNewExpense((prev) => ({
-              ...prev,
-              name: e.target.value,
-            }))
+            setExpense((prev) => ({ ...prev, description: e.target.value }))
           }
         />
-
-        <br />
-        <br />
-
         <input
-          placeholder="Cost"
-          value={newExpense.cost}
+          type='number'
+          placeholder='Type amount item...'
+          value={expense.amount}
           onChange={(e) =>
-            setNewExpense((prev) => ({
-              ...prev,
-              cost: e.target.value,
-            }))
+            setExpense((prev) => ({ ...prev, amount: e.target.value }))
           }
         />
-
+        <br />
+        <select
+          value={expense.category}
+          onChange={(e) => {
+            setExpense((prev) => ({ ...prev, category: e.target.value }));
+          }}
+        >
+          <option value=''>Select category</option>
+          <option value='Food'>Food</option>
+          <option value='Transport'>Transport</option>
+          <option value='Entertainment'>Entertainment</option>
+        </select>
         <br />
         <br />
-
-        <button type="submit">Save</button>
+        <button type='submit'>Save</button>
       </form>
     </>
   );
 }
 
 export { ExpenseForm };
-
-*/
-
-/* *** IMPORTANTE: VERSION PROPIA *** 
-// Como pasamos de este codigo a la solucion que genera Copilot?
-
-import { useState } from "react";
-
-function ExpenseForm({ expenses, addExpenseHandler }) {
-  // Local state
-  const [newExpense, setNewExpense] = useState({});
-  console.log(newExpense);
-
-  const saveExpenseHandler = (e) => {
-    e.preventDefault();
-
-    addExpenseHandler(newExpense);
-
-    const expenseToSave = { ...newExpense, id: Date.now() };
-  };
-
-  return (
-    <>
-      <ul>
-        {expenses.map((expense) => (
-          <li key={expense.id}>
-            {expense.name} - {expense.cost}
-          </li>
-        ))}
-      </ul>
-
-      <h1>Expense form</h1>
-      <form onSubmit={saveExpenseHandler}>
-        <input onChange={(e) => setNewExpense((prev) => ({ ...prev, name: e.target.value }))} />
-        <br />
-        <br />
-        <input onChange={(e) => setNewExpense((prev) => ({ ...prev, cost: e.target.value }))} />
-        <br />
-        <br />
-        <button type="submit">Click</button>
-      </form>
-    </>
-  );
-}
-
-export { ExpenseForm };
-
-*/

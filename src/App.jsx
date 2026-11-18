@@ -1,26 +1,48 @@
 import './App.css';
 import { useEffect, useState } from 'react';
+import { ExpenseForm } from './Components/ExpenseForm.jsx';
+import { ExpenseList } from './Components/ExpenseList.jsx';
+import { CategoryFilter } from './Components/CategoryFilter.jsx';
+import { ExpenseSummary } from './Components/ExpenseSummary.jsx';
 
 function App() {
+  // =================
+  // state -> expense
   const [expense, setExpense] = useState({
     description: '',
     amount: '',
     category: ''
   });
 
+  // =================
+  // state -> expenses
   const [expenses, setExpenses] = useState([]);
 
-  // Ejecuta console.log(expenses) cada vez que [expenses] cambie
+  // =================
+  // state -> selectedCategory
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  // =================
+  // derived values -> filteredExpenses
+  const filteredExpenses =
+    selectedCategory === 'All'
+      ? expenses
+      : expenses.filter((expense) => expense.category === selectedCategory);
+  // -----------------
+  // derived values -> totalAmount
+  const totalAmount = expenses.reduce(
+    (sum, expense) => sum + Number(expense.amount),
+    0
+  );
+
+  // =================
+  // useEffect -> filteredExpenses
   useEffect(() => {
     console.log(expenses);
   }, [expenses]);
-  //   Previo handleSubmit
-  //   function handleSubmit(e) {
-  //     e.preventDefault();
-  //     setExpenses((prev) => [...prev, expense]);
-  //   }
 
-  // handleSubmit anadiendo un id con Date.now()
+  // =================
+  // form onSumit -> handleSubmit
   function handleSubmit(e) {
     e.preventDefault();
     setExpenses((prev) => [
@@ -30,8 +52,6 @@ function App() {
         id: Date.now()
       }
     ]);
-
-    // Limpiar el formulario tras guardar
     setExpense({
       description: '',
       amount: '',
@@ -42,62 +62,20 @@ function App() {
   return (
     <>
       <h2>Expense Tracker</h2>
-      {/* Form Section */}
-      <h3>Form</h3>
-      <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          placeholder='Type amount description... '
-          value={expense.description}
-          onChange={(e) =>
-            setExpense((prev) => ({ ...prev, description: e.target.value }))
-          }
-        />
-
-        <input
-          type='number'
-          placeholder='Type amount item...'
-          value={expense.amount}
-          onChange={(e) =>
-            setExpense((prev) => ({ ...prev, amount: e.target.value }))
-          }
-        />
-        <br />
-        <select
-          value={expense.category}
-          onChange={(e) => {
-            setExpense((prev) => ({ ...prev, category: e.target.value }));
-          }}
-        >
-          <option value=''>Select category</option>
-          <option value='Food'>Food</option>
-          <option value='Transport'>Transport</option>
-          <option value='Entertainment'>Entertainment</option>
-        </select>
-        <br />
-        <br />
-        <button type='submit'>Save</button>
-      </form>
-      {/* List Section */}
-      <h3>List</h3>
-      <ul>
-        {expenses.map((expense) => (
-          <li key={expense.id}>
-            {expense.description} {expense.amount} {expense.category}
-          </li>
-        ))}
-      </ul>
-      {/* Total Section */}
-      <h3>Total</h3>
-      <p>
-        {expenses.reduce((sum, expense) => sum + Number(expense.amount), 0)}
-      </p>
+      <ExpenseForm
+        expense={expense}
+        setExpense={setExpense}
+        handleSubmit={handleSubmit}
+      />
+      <ExpenseList expenses={expenses} />
+      <CategoryFilter
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        filteredExpenses={filteredExpenses}
+      />
+      <ExpenseSummary totalAmount={totalAmount} />
     </>
   );
 }
-
-// Use onSubmit at the form level instead of onClick on the button
-// to preserve native form behavior (e.g. submitting with Enter)
-// and improve accessibility.
 
 export default App;
