@@ -2,9 +2,11 @@ import { ecc } from '../StyleClasses.js';
 
 function ExpenseItem({ expense }) {
   return (
-    <li className={ecc.i}>
-      {expense.description} {expense.amount} {expense.category}
-    </li>
+    <tr className={ecc.i}>
+      <td>{expense.description}</td>
+      <td>{expense.amount}</td>
+      <td>{expense.category}</td>
+    </tr>
   );
 }
 

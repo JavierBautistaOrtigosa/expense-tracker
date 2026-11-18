@@ -193,10 +193,34 @@ ol {
   list-style: none;
 }
 
+table.expense-card__list {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+table.expense-card__list th,
+table.expense-card__list td {
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid #343438;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+
+table.expense-card__list th {
+  color: #f3f4f6;
+}
+
 .expense-card__item {
   padding: 0.75rem 0.9rem;
   border: 1px solid #343438;
   border-radius: 0.65rem;
+  background: #202022;
+  color: #d4d4d8;
+}
+
+table.expense-card__list .expense-card__item > td {
   background: #202022;
   color: #d4d4d8;
 }

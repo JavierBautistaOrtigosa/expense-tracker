@@ -3,6 +3,7 @@ import { ExpenseForm } from './Components/ExpenseForm.jsx';
 import { ExpenseList } from './Components/ExpenseList.jsx';
 import { CategoryFilter } from './Components/CategoryFilter.jsx';
 import { ExpenseSummary } from './Components/ExpenseSummary.jsx';
+import { MOCK_EXPENSES } from './data/mockExpenses.js';
 
 function ExpenseTracker() {
   // =================
@@ -15,7 +16,7 @@ function ExpenseTracker() {
 
   // =================
   // state -> expenses
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState(MOCK_EXPENSES);
 
   // =================
   // state -> selectedCategory
@@ -65,7 +66,7 @@ function ExpenseTracker() {
         setExpense={setExpense}
         handleSubmit={handleSubmit}
       />
-      <ExpenseList expenses={expenses} />
+      <ExpenseList expenses={filteredExpenses} />
       <CategoryFilter
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
