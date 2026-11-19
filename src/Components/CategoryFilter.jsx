@@ -1,10 +1,6 @@
 import { ecc } from '../StyleClasses.js';
 
-function CategoryFilter({
-  selectedCategory,
-  setSelectedCategory,
-  filteredExpenses
-}) {
+function CategoryFilter({ selectedCategory, setSelectedCategory }) {
   return (
     <section className={ecc.c}>
       <select
@@ -16,13 +12,6 @@ function CategoryFilter({
         <option value='Transport'>Transport</option>
         <option value='Entertainment'>Entertainment</option>
       </select>
-      <ul className={ecc.l}>
-        {filteredExpenses.map((filteredExpense) => (
-          <li className={ecc.i} key={filteredExpense.id}>
-            {filteredExpense.description}
-          </li>
-        ))}
-      </ul>
     </section>
   );
 }

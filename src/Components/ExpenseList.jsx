@@ -1,25 +1,48 @@
 import { ecc } from '../StyleClasses.js';
 import { ExpenseItem } from './ExpenseItem.jsx';
+import { ExpenseToolbar } from './ExpenseToolbar.jsx';
 
-function ExpenseList({ expenses }) {
+function ExpenseList({
+  expenses,
+  selectedCategory,
+  setSelectedCategory,
+  isEditing,
+  setIsEditing,
+  handleDeleteExpense,
+  handleModifyExpense
+}) {
   return (
     <section className={ecc.c}>
-      {/* <h3 className={ecc.t}>List</h3> */}
+      <ExpenseToolbar
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+      />
 
-      <table className={ecc.l}>
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Category</th>
-          </tr>
-        </thead>
-        <tbody>
-          {expenses.map((expense) => (
-            <ExpenseItem key={expense.id} expense={expense} />
-          ))}
-        </tbody>
-      </table>
+      <div className={ecc.tc}>
+        <table className={ecc.l} data-editing={isEditing}>
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Category</th>
+              {isEditing && <th>Actions</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {expenses.map((expense) => (
+              <ExpenseItem
+                key={expense.id}
+                expense={expense}
+                isEditing={isEditing}
+                handleDeleteExpense={handleDeleteExpense}
+                handleModifyExpense={handleModifyExpense}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }

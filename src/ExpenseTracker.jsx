@@ -1,76 +1,142 @@
 import { useEffect, useState } from 'react';
 import { ExpenseForm } from './Components/ExpenseForm.jsx';
 import { ExpenseList } from './Components/ExpenseList.jsx';
-import { CategoryFilter } from './Components/CategoryFilter.jsx';
 import { ExpenseSummary } from './Components/ExpenseSummary.jsx';
 import { MOCK_EXPENSES } from './data/mockExpenses.js';
+import { ecc } from './StyleClasses.js';
 
 function ExpenseTracker() {
-  // =================
-  // state -> expense
+  // ---
+  // #region - state
+
+  // ---expense
   const [expense, setExpense] = useState({
     description: '',
     amount: '',
     category: ''
   });
 
-  // =================
-  // state -> expenses
+  // --- expenses
   const [expenses, setExpenses] = useState(MOCK_EXPENSES);
 
-  // =================
-  // state -> selectedCategory
-  const [selectedCategory, setSelectedCategory] = useState('');
+  // --- selectedCategory
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
-  // =================
-  // derived values -> filteredExpenses
+  // --- isEditing
+  const [isEditing, setIsEditing] = useState(false);
+
+  // --- editingExpense
+  const [editingExpense, setEditingExpense] = useState(null); // Saber que expense se esta editando actualmente
+
+  // #endregion
+
+  // ---
+  // #region - derived values
+
+  // --- filteredExpenses
   const filteredExpenses =
     selectedCategory === 'All'
       ? expenses
       : expenses.filter((expense) => expense.category === selectedCategory);
   // -----------------
-  // derived values -> totalAmount
+  // --- totalAmount
   const totalAmount = expenses.reduce(
     (sum, expense) => sum + Number(expense.amount),
     0
   );
 
-  // =================
-  // useEffect -> filteredExpenses
+  //   #endregion
+
+  //   ---
+  // #region - useEffect
   useEffect(() => {
     console.log(expenses);
   }, [expenses]);
 
-  // =================
-  // form onSumit -> handleSubmit
+  // #endregion
+
+  //   ---
+  // #region - handlers
+
+  // --- handleSubmit (form)
+
+  //   function handleSubmit(e) {
+  //     e.preventDefault();
+  //     setExpenses((prev) => [
+  //       ...prev,
+  //       {
+  //         ...expense,
+  //         id: Date.now()
+  //       }
+  //     ]);
+  //     setExpense({
+  //       description: '',
+  //       amount: '',
+  //       category: ''
+  //     });
+  //   }
+
   function handleSubmit(e) {
     e.preventDefault();
-    setExpenses((prev) => [
-      ...prev,
-      {
-        ...expense,
-        id: Date.now()
-      }
-    ]);
+
+    if (editingExpense) {
+      console.log('expense:', expense);
+      console.log('editingExpense:', editingExpense);
+      setExpenses((prev) =>
+        prev.map((currentExpense) =>
+          currentExpense.id === editingExpense.id ? expense : currentExpense
+        )
+      );
+
+      setEditingExpense(null);
+    } else {
+      setExpenses((prev) => [
+        ...prev,
+        {
+          ...expense,
+          id: Date.now()
+        }
+      ]);
+    }
+
     setExpense({
       description: '',
       amount: '',
       category: ''
     });
   }
+
+  // --- handleDeleteExpense (delete expensebutton)
+
+  const handleDeleteExpense = (id) => {
+    setExpenses((prev) => prev.filter((expense) => expense.id !== id));
+  };
+
+  // --- handleModifyExpense (modify expense button)
+
+  const handleModifyExpense = (expense) => {
+    setExpense(expense);
+    setEditingExpense(expense);
+  };
+
+  //   #endregion
+
   return (
-    <div className='expense-tracker'>
+    <div className={ecc.et}>
       <h2>Expense Tracker</h2>
       <ExpenseForm
         expense={expense}
         setExpense={setExpense}
         handleSubmit={handleSubmit}
       />
-      <ExpenseList expenses={filteredExpenses} />
-      <CategoryFilter
+      <ExpenseList
+        expenses={filteredExpenses}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
-        filteredExpenses={filteredExpenses}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+        handleDeleteExpense={handleDeleteExpense}
+        handleModifyExpense={handleModifyExpense}
       />
       <ExpenseSummary totalAmount={totalAmount} />
     </div>
